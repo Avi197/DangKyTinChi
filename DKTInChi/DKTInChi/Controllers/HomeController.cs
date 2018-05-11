@@ -34,34 +34,13 @@ namespace DKTInChi.Controllers
 
         private void loadData()
         {
-//            SqlDataReader reader = ;
-            string conf = WebConfigurationManager.ConnectionStrings["DangKyTinChi"].ConnectionString;
-            SqlConnection conn = new SqlConnection(conf);
-            SqlCommand cmd = new SqlCommand("SELECT * FROM student",conn);
 
-            try
+            SqlDataReader reader = CommonFunction.CommonFunction.loadData("SELECT * FROM student");
+            while (reader.Read())
             {
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    string field1 = (string) reader["code"];
-                    string field2 = (string) reader["lastname"];
-                    Console.Write(field1 + ": " + field2 + "\n");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            finally
-            {
-                if (conn != null)
-                {
-                    conn.Close();
-                }
+                string field1 = (string)reader["code"];
+                string field2 = (string)reader["lastname"];
+                Console.Write("student: " + field1 + ": " + field2 + "\n");
             }
         }
     }
