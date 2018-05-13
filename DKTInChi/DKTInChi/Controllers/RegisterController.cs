@@ -14,8 +14,7 @@ namespace DKTInChi.Controllers
         public ActionResult Index()
         {
             loadData();
-            ViewData["ListSubject"] = listSubject;
-            return View();
+            return View(model: listSubject);
         }
 
         public ActionResult RegisterAction(string code)
