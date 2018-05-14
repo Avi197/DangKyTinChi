@@ -9,39 +9,61 @@ namespace DKTInChi.Controllers
     {
 
         public List<Subject> listSubject = new List<Subject>();
+        public List<Subject> listRegister = new List<Subject>();
+        
+        public List<CourseClass> listCourseClasses = new List<CourseClass>();
 
         // GET
         public ActionResult Index()
         {
             loadData();
-            return View(model: listSubject);
+            ViewData["ListRegister"] = listRegister;
+            return View(model: listCourseClasses);
         }
 
+        [HttpGet]
         public ActionResult RegisterAction(string code)
         {
+            Subject sb = listSubject.Find(s => s.code == code);
+            listRegister.Add(sb);
+            ViewData["ListRegister"] = listRegister;
             return RedirectToAction("Index");
+        }
+
+        private void registerAction()
+        {
+            string cmd = "";
         }
 
         private void loadData()
         {
-            SqlDataReader reader = CommonFunction.CommonFunction.loadData("SELECT * FROM subjects");
-            while (reader.Read())
+            SqlDataReader readerMon = CommonFunction.CommonFunction.loadData("exec LayDanhSachMonDuocDangKy '15150419',1");
+            while (readerMon.Read())
             {
-                string code = (string)reader["code"];
-                string name = (string)reader["name"];
-                int numbercredit = (int)reader["numbercredit"];
-                int theory = (int)reader["theory"];
-                int totalsession = (int)reader["totalsession"];
-                Subject subject = new Subject
+                string code = (string)readerMon["code"];
+                if (code == "0")
                 {
-                    code = code,
-                    name = name,
-                    numbercredit = numbercredit,
-                    theory = theory,
-                    totalsession = totalsession
-                };
-                listSubject.Add(subject);
+                    continue;
+                }
+
+                SqlDataReader readerHocPhan =
+                    CommonFunction.CommonFunction.loadData("EXEC LayDanhSachHocPhanDuocDangKy '" + code + "'");
+                while (readerHocPhan.Read())
+                {
+                    CourseClass cc = new CourseClass
+                    {
+                        maHocPhan = (string) readerHocPhan["code"],
+                        tenHocPhan = (string) readerHocPhan["name"],
+                        soTinChi = (int) readerHocPhan["numbercredit"],
+                        tongSoTiet = (int) readerHocPhan["totalsession"],
+                        maxStudent = (int) readerHocPhan["maxstudent"],
+                        signStudent = (int) readerHocPhan["signedstudent"]
+                    };
+                    listCourseClasses.Add(cc);
+                }
             }
         }
+        
+        
     }
 }

@@ -20,5 +20,14 @@ namespace CommonFunction
             SqlDataReader reader = cmd.ExecuteReader();
             return reader;
         }
+
+        public static void execNonQuery(string command)
+        {
+            string conf = WebConfigurationManager.ConnectionStrings["DangKyTinChi"].ConnectionString;
+            SqlConnection conn = new SqlConnection(conf);
+            SqlCommand cmd = new SqlCommand(command, conn);
+            conn.Open();
+            cmd.ExecuteNonQuery();
+        }
     }
 }
