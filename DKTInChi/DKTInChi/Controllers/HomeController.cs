@@ -11,25 +11,25 @@ namespace DKTInChi.Controllers
 {
     public class HomeController : Controller
     {
-        
+        public bool CheckLogin()
+        {
+            if (Session["username"] == null)
+            {
+                return false;
+            }
+            else return true;
+        }
         public ActionResult Index()
         {
-            loadData();
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            if (CheckLogin() == false)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                loadData();
+                return View();
+            }
         }
 
         private void loadData()

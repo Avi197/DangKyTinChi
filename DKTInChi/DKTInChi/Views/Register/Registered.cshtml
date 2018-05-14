@@ -10,7 +10,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Responsive Hover Table</h3>
+                    <h3 class="box-title">Các môn đã đăng ký</h3>
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
                             <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -27,17 +27,16 @@
                             <th>Mã Học Phần</th>
                             <th>Tên Học Phần</th>
                             <th>Số tín chỉ</th>
-                            <th>Tổng số tiết</th>
-                            <th>Chức năng</th>
+                            <th>Địa điểm</th>   
+                            <th></th>                         
                         </tr>
                         @foreach (var sb in Model)
                         {
                             <tr>
-                                <td>@sb.code</td>
+                                <td name="id" value="@sb.code">@sb.code</td>
                                 <td>@sb.name</td>
                                 <td>@sb.numbercredit</td>
-                                <td>@sb.theory</td>
-                                <td>@Html.ActionLink("Đăng ký", "RegisterAction", "Register")</td>
+                                <td>@sb.place</td>                               
                             </tr>
                         }
 
