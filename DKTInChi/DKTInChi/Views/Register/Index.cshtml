@@ -6,7 +6,7 @@
 }
 
 @{
-    var listRegister = (List<Subject>) ViewData["ListRegister"];
+    var listRegister = (List<RegisterClass>) ViewData["ListRegisterClasses"];
 }
 
 <div>
@@ -45,7 +45,7 @@
                                 <td>@sb.tongSoTiet</td>
                                 <td>@sb.maxStudent</td>
                                 <td>@sb.signStudent</td>
-                                <td>@Html.ActionLink("Đăng ký", "RegisterAction", "Register", new {code = sb.maHocPhan})</td>
+                                <td>@Html.ActionLink("Đăng ký", "RegisterAction", "Register", new {maHocPhan = sb.maHocPhan}, null))</td>
                             </tr>
                         }
 
@@ -72,18 +72,20 @@
                     {
                         <table class="table table-hover">
                             <tr>
-                                <th>Mã Học Phần</th>
+                                <th>Mã Lớp Học Phần</th>
                                 <th>Tên Học Phần</th>
                                 <th>Số tín chỉ</th>
-                                <th>Tổng số tiết</th>
+                                <th>Tổng số tiền</th>
+                                <th>Chức năng</th>
                             </tr>
                             @foreach (var r in @listRegister)
                             {
                                 <tr>
-                                    <td>@r.code</td>
-                                    <td>@r.name</td>
-                                    <td>@r.numbercredit</td>
-                                    <td>@r.theory</td>
+                                    <td>@r.maLopHocPhan</td>
+                                    <td>@r.tenMonHoc</td>
+                                    <td>@r.soTC</td>
+                                    <td>@r.tien</td>
+                                    <td>@Html.ActionLink("Huỷ Đăng Ký", "CancelRegister", "Register", new {maLopHocPhan = @r.maLopHocPhan}, null)</td>
                                 </tr>
                             }
                         </table>

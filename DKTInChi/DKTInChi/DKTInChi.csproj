@@ -100,6 +100,7 @@
     <Compile Include="Controllers\SubjectController.cs" />
     <Compile Include="Global.asax.cs" />
     <Compile Include="Models\CourseClass.cs" />
+    <Compile Include="Models\RegisterClass.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CommonFunction.cs" />

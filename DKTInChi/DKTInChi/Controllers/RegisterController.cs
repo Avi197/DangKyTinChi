@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Data.SqlClient;
 using DKTInChi.Models;
 using System.Collections.Generic;
@@ -8,35 +9,56 @@ namespace DKTInChi.Controllers
     public class RegisterController : Controller
     {
 
-        public List<Subject> listSubject = new List<Subject>();
-        public List<Subject> listRegister = new List<Subject>();
         
         public List<CourseClass> listCourseClasses = new List<CourseClass>();
+        public List<RegisterClass> listRegisterClasses = new List<RegisterClass>();
 
         // GET
         public ActionResult Index()
         {
             loadData();
-            ViewData["ListRegister"] = listRegister;
+            loadResgister();
+            ViewData["ListRegisterClasses"] = listRegisterClasses;
             return View(model: listCourseClasses);
         }
-
-        [HttpGet]
-        public ActionResult RegisterAction(string code)
+        
+        public ActionResult RegisterAction(string maHocPhan)
         {
-            Subject sb = listSubject.Find(s => s.code == code);
-            listRegister.Add(sb);
-            ViewData["ListRegister"] = listRegister;
+            string cmd = String.Format("exec Proc_DangKy '15150419', '"+ maHocPhan +"',250000,1");
+            CommonFunction.CommonFunction.execNonQuery(cmd);
+            TempData["msg"] = "<script>alert('Đăng ký thành công');</script>";
             return RedirectToAction("Index");
         }
-
-        private void registerAction()
+        
+        private void loadResgister()
         {
-            string cmd = "";
+            listRegisterClasses.Clear();
+            SqlDataReader readerRegister = CommonFunction.CommonFunction.loadData("exec inKQ '15150419'");
+            while (readerRegister.Read())
+            {
+                RegisterClass rc = new RegisterClass
+                {
+                    maHocPhan = (string) readerRegister["MaHP"],
+                    maLopHocPhan = (string) readerRegister["MaLHP"],
+                    tenMonHoc = (string) readerRegister["TenMH"],
+                    soTC = (int) readerRegister["SoTC"],
+                    tien = (int) readerRegister["Tien"]
+                };
+                listRegisterClasses.Add(rc);
+            }
+            
+        }
+
+        public ActionResult CancelRegister(string maLopHocPhan)
+        {
+            string cmd = String.Format("EXEC HuyLopHocPhan '15150419', '"+ maLopHocPhan +"'");
+            CommonFunction.CommonFunction.execNonQuery(cmd);
+            return RedirectToAction("Index");
         }
 
         private void loadData()
         {
+            listCourseClasses.Clear();
             SqlDataReader readerMon = CommonFunction.CommonFunction.loadData("exec LayDanhSachMonDuocDangKy '15150419',1");
             while (readerMon.Read())
             {
