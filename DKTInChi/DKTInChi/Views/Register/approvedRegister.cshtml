@@ -1,0 +1,60 @@
+﻿@using DKTInChi.Models;
+@using PagedList;
+@using PagedList.Mvc;
+@model DKTInChi.Models.ViewModel
+@{
+    ViewBag.Title = "title";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Các môn được đăng ký</h3>
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding" style="">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Mã Học Phần</th>
+                            <th>Tên Học Phần</th>
+                            <th>Số tín chỉ</th>
+                            <th>Lý thuyết</th>
+                            <th>Bài tập</th>
+                            <th>Thực hành</th>
+                            <th>Thảo luận</th>
+                            <th>Tổng số tiết</th>                            
+                        </tr>
+                        @foreach (var sb in Model.subjects)
+                        {
+                            <tr>
+                                <td>@sb.code</td>
+                                <td>@sb.name</td>
+                                <td>@sb.numbercredit</td>
+                                <td>@sb.theory</td>
+                                <td>@sb.task</td>
+                                <td>@sb.pratice</td>
+                                <td>@sb.discussion</td>
+                                <td>@sb.theory</td>                               
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</div>
+@Html.PagedListPager(Model.subjects, page => Url.Action("Index", new { page }))

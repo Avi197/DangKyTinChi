@@ -15,5 +15,8 @@ namespace DKTInChi.Models
         public int pratice { get; set; }
         public int discussion { get; set; }
         public int totalsession { get; set; }
+        public string coursecode { get; set; }
+        public string time { get; set; }
+        public string place { get; set; }
     }
 }
